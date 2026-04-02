@@ -20,7 +20,7 @@ export default function Home() {
           {/* MOBILE */}
           <div className="block md:hidden absolute inset-0">
             <img
-              src="/images/gb2.jpeg"
+              src="/images/gb1.jpg"
               className="w-full h-full object-cover object-top"
               alt="Dr Gabriel Baião"
             />
@@ -64,7 +64,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a
-                href="https://wa.me/5589981396444"
+                href="https://wa.me/5589981396444?text=Ol%C3%A1,%20vim%20do%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Gabriel%20Bai%C3%A3o%20em%20Floriano"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] w-full sm:w-auto"
@@ -101,12 +101,23 @@ export default function Home() {
           {/* FOTO */}
           <div className="relative order-2 lg:order-1">
             <div className="absolute -inset-4 bg-blue-600/10 blur-2xl rounded-3xl pointer-events-none"></div>
+
             <div className="aspect-[4/5] sm:aspect-square lg:aspect-[4/5] relative rounded-3xl overflow-hidden shadow-2xl border border-white/5">
+
+              {/* DESKTOP */}
               <img
                 src="/images/gb1.jpg"
-                className="w-full h-full object-cover object-[75%_center] md:object-right"
+                className="hidden md:block w-full h-full object-cover object-[75%_center]"
                 alt="Dr Gabriel Baião em Atendimento"
               />
+
+              {/* MOBILE */}
+              <img
+                src="/images/gb2.jpeg"
+                className="block md:hidden w-full h-full object-cover object-top"
+                alt="Dr Gabriel Baião"
+              />
+
             </div>
           </div>
 
@@ -186,7 +197,7 @@ export default function Home() {
               </div>
 
               <a
-                href="https://wa.me/5589981396444"
+                href="https://wa.me/5589981396444?text=Ol%C3%A1,%20vim%20do%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Gabriel%20Bai%C3%A3o%20em%20Floriano"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto text-center bg-green-600 hover:bg-green-700 px-6 py-3 rounded-full font-semibold transition-all shadow-lg"
