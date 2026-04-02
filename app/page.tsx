@@ -101,12 +101,23 @@ export default function Home() {
           {/* FOTO */}
           <div className="relative order-2 lg:order-1">
             <div className="absolute -inset-4 bg-blue-600/10 blur-2xl rounded-3xl pointer-events-none"></div>
+
             <div className="aspect-[4/5] sm:aspect-square lg:aspect-[4/5] relative rounded-3xl overflow-hidden shadow-2xl border border-white/5">
+
+              {/* DESKTOP */}
               <img
                 src="/images/gb1.jpg"
-                className="w-full h-full object-cover object-[75%_center] md:object-right"
+                className="hidden md:block w-full h-full object-cover object-[75%_center]"
                 alt="Dr Gabriel Baião em Atendimento"
               />
+
+              {/* MOBILE */}
+              <img
+                src="/images/gb2.jpeg"
+                className="block md:hidden w-full h-full object-cover object-top"
+                alt="Dr Gabriel Baião"
+              />
+
             </div>
           </div>
 
