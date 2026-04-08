@@ -1,14 +1,100 @@
-export default function Home() {
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+
+// 1. Dicionário de dados das cidades
+const locationsData = {
+  floriano: {
+    city: "Floriano",
+    clinicName: "Espaço Vitta",
+    address: "R. Milad Kalume, 22 - Centro",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps?q=R.+Milad+Kalume,+22+-+Centro,+Floriano+-+PI&output=embed"
+  },
+  bom_jesus: {
+    city: "Bom Jesus",
+    clinicName: "Clínica Mais Saúde",
+    address: "Av. Getúlio Vargas, 857 - Centro",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3601.315083449316!2d-44.359223!3d-9.0728505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x77c4da701964631%3A0x22aec30c74000d3b!2sAv.%20Getulio%20Vargas%2C%20857%20-%20Centro%2C%20Bom%20Jesus%20-%20PI%2C%2064900-000!5e1!3m2!1spt-BR!2sbr!4v1775655899774!5m2!1spt-BR!2sbr"
+  },
+  oeiras: {
+    city: "Oeiras",
+    clinicName: "Centro De Endoscopia De Oeiras",
+    address: "600, Av. Rui Barbosa, 602",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.643624031249!2d-42.1253518!3d-7.0149281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x79c9104fe9a45bd%3A0x3411202ef5c8e3d6!2sCentro%20De%20Endoscopia%20De%20Oeiras!5e1!3m2!1spt-BR!2sbr!4v1775656458950!5m2!1spt-BR!2sbr"
+  },
+  pastos_bons: {
+    city: "Pastos Bons",
+    clinicName: "Clínica Exemplo",
+    address: "Rua das Flores, 100 - Centro",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "URL_DO_IFRAME_DO_MAPA_DE_BOM_JESUS"
+  },
+  uruçui: {
+    city: "Uruçuí",
+    clinicName: "Clínica Saint Germain",
+    address: "Av. José Cavalcante, 324",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.8863532854148!2d-44.5542486!3d-7.2374729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x780450310b707bb%3A0xe96b1aeab2087033!2sCl%C3%ADnica%20Saint%20Germain%20-%20Uru%C3%A7ui!5e1!3m2!1spt-BR!2sbr!4v1775656567292!5m2!1spt-BR!2sbr"
+  },
+  corrente: {
+    city: "Corrente",
+    clinicName: "Policlínica de Corrente",
+    address: "R. Des. Amaral, 1675 - Centro",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3586.5535915134387!2d-45.1648882!3d-10.441328000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x933339d2dedab535%3A0x64598e27ae77cbf3!2sPolicl%C3%ADnica%20de%20Corrente!5e1!3m2!1spt-BR!2sbr!4v1775656644115!5m2!1spt-BR!2sbr"
+  },
+  curimata: {
+    city: "Curimatá",
+    clinicName: "Med Saúde",
+    address: "Av. princesa Isabel - Centro, ",
+    state: "PI",
+    phone: "5589981396444",
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3591.134547250674!2d-44.3022467!3d-10.036440299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x76323007c94ef37%3A0xe49ca1d3051044d9!2zTWVkc2HDumRl!5e1!3m2!1spt-BR!2sbr!4v1775656756273!5m2!1spt-BR!2sbr"
+  },
+};
+
+// 2. Componente que contém a lógica da página
+function PageContent() {
+  const searchParams = useSearchParams();
+  const [location, setLocation] = useState(locationsData.floriano);
+
+  useEffect(() => {
+    const utmCampaign = searchParams.get("utm_campaign");
+    
+    if (utmCampaign) {
+      // CORREÇÃO: Tudo na mesma linha para evitar erro de sintaxe
+      // Usei replaceAll para garantir que todos os hifens virem underlines
+      const normalizedUtm = utmCampaign.toLowerCase().replaceAll("-", "_"); 
+      
+      // CORREÇÃO: Validação segura para remover a linha vermelha do editor
+      if (normalizedUtm in locationsData) {
+        // @ts-ignore - Ignora o falso positivo do VS Code caso ele exija TypeScript
+        setLocation(locationsData[normalizedUtm]);
+      }
+    }
+  }, [searchParams]);
+
+  const waMessage = encodeURIComponent(
+    `Olá, vim do site e gostaria de agendar uma consulta com o Dr. Gabriel Baião em ${location.city}`
+  );
+  const waLink = `https://wa.me/${location.phone}?text=${waMessage}`;
+
   return (
     <main className="bg-[#0B0F14] text-white overflow-hidden font-sans scroll-smooth">
-
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center justify-center lg:justify-start pt-20 pb-12 lg:py-0">
-
         {/* BACKGROUND */}
         <div className="absolute inset-0">
-
-          {/* DESKTOP */}
           <div className="hidden md:block absolute inset-0">
             <img
               src="/images/gb-hero.png"
@@ -16,8 +102,6 @@ export default function Home() {
               alt="Dr Gabriel Baião"
             />
           </div>
-
-          {/* MOBILE */}
           <div className="block md:hidden absolute inset-0">
             <img
               src="/images/gb1.jpg"
@@ -25,13 +109,8 @@ export default function Home() {
               alt="Dr Gabriel Baião"
             />
           </div>
-
-          {/* GRADIENTE DESKTOP */}
           <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#0B0F14] via-[#0B0F14]/90 to-transparent"></div>
-
-          {/* GRADIENTE MOBILE */}
           <div className="block md:hidden absolute inset-0 bg-gradient-to-t from-[#0B0F14] via-[#0B0F14]/85 to-transparent"></div>
-
         </div>
 
         {/* GLOW */}
@@ -39,7 +118,6 @@ export default function Home() {
 
         {/* CONTENT */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left mt-32 lg:mt-0">
             <img
               src="/images/gb-logo-branca.png"
@@ -58,13 +136,13 @@ export default function Home() {
               Tratamentos modernos, precisos e minimamente invasivos para dores crônicas e agudas.
               <br className="hidden sm:block" />
               <strong className="text-white font-medium mt-2 block">
-                Atendimento em Floriano, sem precisar sair da cidade.
+                Atendimento em {location.city}, sem precisar sair da cidade.
               </strong>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a
-                href="https://wa.me/5589981396444?text=Ol%C3%A1,%20vim%20do%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Gabriel%20Bai%C3%A3o%20em%20Floriano"
+                href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] w-full sm:w-auto"
@@ -85,46 +163,38 @@ export default function Home() {
                 </svg>
               </a>
             </div>
-
           </div>
         </div>
       </section>
 
       {/* SEÇÃO 2 - SOBRE */}
       <section id="sobre" className="py-20 lg:py-32 relative">
-
         {/* BACKGROUND */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F14] to-[#101826]"></div>
 
         <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
           {/* FOTO */}
           <div className="relative order-2 lg:order-1">
             <div className="absolute -inset-4 bg-blue-600/10 blur-2xl rounded-3xl pointer-events-none"></div>
 
             <div className="aspect-[4/5] sm:aspect-square lg:aspect-[4/5] relative rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-
-              {/* DESKTOP */}
               <img
                 src="/images/gb1.jpg"
                 className="hidden md:block w-full h-full object-cover object-[75%_center]"
                 alt="Dr Gabriel Baião em Atendimento"
               />
-
-              {/* MOBILE */}
               <img
                 src="/images/gb2.jpeg"
                 className="block md:hidden w-full h-full object-cover object-top"
                 alt="Dr Gabriel Baião"
               />
-
             </div>
           </div>
 
           {/* TEXTO */}
           <div className="order-1 lg:order-2 text-center lg:text-left">
             <span className="inline-block text-blue-400 uppercase tracking-widest text-xs sm:text-sm font-semibold bg-blue-400/10 px-4 py-2 rounded-full mb-6">
-              Atendimento em Floriano
+              Atendimento em {location.city}
             </span>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
@@ -148,7 +218,6 @@ export default function Home() {
 
             {/* CARDS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12 text-left">
-
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl backdrop-blur-sm hover:bg-white/10 transition-colors">
                 <div className="bg-blue-500/20 p-3 rounded-lg text-blue-400">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
@@ -176,7 +245,6 @@ export default function Home() {
                 </div>
                 <span className="font-medium text-gray-200">Atendimento Humanizado</span>
               </div>
-
             </div>
 
             {/* ENDEREÇO & BOTÃO FINAL */}
@@ -187,17 +255,17 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-white font-semibold text-lg">
-                    Espaço Vitta
+                    {location.clinicName}
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    R. Milad Kalume, 22 - Centro<br />
-                    Floriano - PI
+                    {location.address}<br />
+                    {location.city} - {location.state}
                   </p>
                 </div>
               </div>
 
               <a
-                href="https://wa.me/5589981396444?text=Ol%C3%A1,%20vim%20do%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Gabriel%20Bai%C3%A3o%20em%20Floriano"
+                href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto text-center bg-green-600 hover:bg-green-700 px-6 py-3 rounded-full font-semibold transition-all shadow-lg"
@@ -205,23 +273,29 @@ export default function Home() {
                 Agendar
               </a>
             </div>
-
           </div>
-
         </div>
       </section>
 
       {/* MAPA */}
       <section className="h-[300px] lg:h-[450px] w-full bg-[#101826] relative">
         <iframe
-          src="https://www.google.com/maps?q=R.+Milad+Kalume,+22+-+Centro,+Floriano+-+PI&output=embed"
+          src={location.mapSrc}
           className="w-full h-full border-0 filter grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          title="Localização do Espaço Vitta em Floriano"
+          title={`Localização do ${location.clinicName} em ${location.city}`}
         />
       </section>
-
     </main>
+  );
+}
+
+// 3. Exportamos o componente com Suspense (Regra importante do Next.js App Router ao usar useSearchParams)
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0B0F14]" />}>
+      <PageContent />
+    </Suspense>
   );
 }
