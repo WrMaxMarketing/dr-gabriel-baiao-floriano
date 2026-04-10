@@ -43,16 +43,26 @@ function RedirectContent() {
 
     // EVENTO PRO PIXEL
     if (typeof window !== "undefined" && (window as any).fbq) {
+      // 1. Evento de Lead (Você já tem)
+      (window as any).fbq('track', 'Lead', {
+        content_name: currentLocation.city,
+        campaign: utmCampaign
+      });
+
+      // 2. Evento de Contato (Adicione este para otimizar conversão)
+      (window as any).fbq('track', 'Contact', {
+        content_name: `WhatsApp - ${currentLocation.city}`,
+        content_category: 'Agendamento',
+        value: 1, // Opcional: atribuir um valor simbólico para o Pixel aprender
+        currency: 'BRL'
+      });
+
+      // 3. Evento Personalizado (Útil para relatórios específicos)
       (window as any).fbq('trackCustom', 'WhatsAppRedirect', {
         city: currentLocation.city,
         utm_campaign: utmCampaign,
         utm_source: utmSource,
         utm_medium: utmMedium
-      });
-
-      (window as any).fbq('track', 'Lead', {
-        content_name: currentLocation.city,
-        campaign: utmCampaign
       });
     }
 
