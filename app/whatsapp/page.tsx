@@ -72,7 +72,7 @@ function RedirectContent() {
     // REDIRECIONAMENTO SEGURO
     const timer = setTimeout(() => {
       window.location.href = generatedLink;
-    }, 1500);
+    }, 2000);
 
     return () => clearTimeout(timer); // Agora a variável 'timer' está acessível
   }, [searchParams]);
